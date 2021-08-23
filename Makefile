@@ -5,7 +5,7 @@ GOTEST=$(GOCMD) test
 GOCLEAN=$(GOCMD) clean
 BINARY_NAME=calculator.exe
 
-#Below "make" commands are available
+#Below are the "make" commands that are available
 #make build: only build binary
 #make clean: clean binary
 #make run:   build and run program
