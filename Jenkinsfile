@@ -44,7 +44,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                // Push to dockerhub image repository with tags per mergeid/featurebranch or etc.
+                // Push to dockerhub image repository with tags per mergeid/featurebranch.
                 script{
                     dockerImg = docker.build repo+":$BUILD_NUMBER"
                     docker.withRegistry( '', registryCredential ) {
