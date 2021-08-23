@@ -7,6 +7,10 @@ pipeline {
         GO114MODULE = 'on'
         CGO_ENABLED = 0 
         GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
+        VERSION_NO         = '1.0'
+        repo               = "vindu97/go-calc"
+        registryCredential = 'dockerhub'
+        dockerImg          = ''
     }
     stages {        
         stage('Pre Test') {
@@ -33,6 +37,20 @@ pipeline {
                     sh 'golint .'
                     echo 'Running test'
                     sh 'cd test && go test -v'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                // Push to dockerhub image repository with tags per mergeid/featurebranch or etc.
+                script{
+                    dockerImg = docker.build repo+":$BUILD_NUMBER"
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImg.push()
+                    }
+                    sh 'docker rmi $repo:$BUILD_NUMBER'
                 }
             }
         }
